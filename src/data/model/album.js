@@ -7,6 +7,7 @@ Album.init({
     type: DataTypes.STRING,
     allowNull: false
   },
+  release: DataTypes.DATEONLY,
   url: {
     type: DataTypes.STRING,
     allowNull: false

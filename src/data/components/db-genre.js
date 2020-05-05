@@ -12,7 +12,7 @@ class DbGenre {
    * @param name A text, the name of the genre
    */
   async create(name) {
-    // await this.sequelize.sync();
+    await this.sequelize.sync();
     try {
       const genre = await Genre.create({
         name: name
@@ -40,7 +40,7 @@ class DbGenre {
    * @param name {String} The name of the genre to fetch.
    * @return A single genre.
    */
-  async fetch(name) {
+  async fetchByName(name) {
     const genre = await Genre.findOne({ 
       where: {
         name: name

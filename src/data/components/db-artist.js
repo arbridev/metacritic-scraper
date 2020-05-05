@@ -49,7 +49,7 @@ class DbArtist {
    * @param name {String} The name of the artist to fetch.
    * @return A single artist.
    */
-  async fetch(name) {
+  async fetchByName(name) {
     const artist = await Artist.findOne({ 
       where: {
         name: name

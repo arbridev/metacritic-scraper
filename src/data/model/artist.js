@@ -4,7 +4,8 @@ const sequelize = require('../db').sequelize;
 const Artist = sequelize.define("artist", {
   name: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 }, {
   timestamps: false
