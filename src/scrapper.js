@@ -14,12 +14,12 @@ const puppeteer = require('puppeteer');
       const link = await page.$(`li.product:nth-child(${i}) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1)`);
       const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
       await link.click({button: 'middle'});
-      // Album page 
       const albumPage = await newPagePromise;
       await albumPage.bringToFront();
       await albumPage.waitForSelector('.product_genre > span:nth-child(2)', {
         visible: true,
       });
+      // Extract album data
       let album = await albumPage.evaluate(() => {
         let title = document.querySelector('a.hover_none > span:nth-child(1) > h1:nth-child(1)').innerText;
         let artist = document.querySelector('.band_name').innerText;
@@ -33,11 +33,9 @@ const puppeteer = require('puppeteer');
       debug(album);
       await albumPage.close();
     }
-    
   } catch(error) {
     debug(error);
   }
-  // await page.screenshot({path: 'screenshot.png'});
 
   await browser.close();
 })();
