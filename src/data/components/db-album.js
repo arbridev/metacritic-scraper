@@ -100,12 +100,21 @@ class DbAlbum {
     });
   }
 
+  // Genre
 
-
-  async addGenre(album, genre) {
+  async hasGenre(album, genreId) {
     await this.sequelize.sync();
     try {
-      await album.addGenre(genre);
+      return await album.hasGenre(genreId);
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
+  async addGenre(album, genreId) {
+    await this.sequelize.sync();
+    try {
+      await album.addGenre(genreId);
       await album.save();
       console.log(album.toJSON());
     } catch(error) {

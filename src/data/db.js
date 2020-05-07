@@ -33,11 +33,10 @@ Genre.belongsToMany(Album, { through: 'album_genre' });
 
 (async () => {
   try {
-
+    await sequelize.sync({ alter: true });
   } catch(error) {
-
+    console.error(error);
   }
-  await sequelize.sync({ alter: true });
 })();
 
 // Db class

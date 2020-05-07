@@ -28,11 +28,17 @@ const db = new Db();
 (async () => {
   try {
     const album = await db.album.fetchByTitle('Blunderbuss');
-    // await db.genre.create('Alternative Pop\/Rock');
-    const genre = await db.genre.fetchByName('Alternative Pop\/Rock');
-    console.log(`Genre:`, JSON.stringify(genre, null, 2));
-
-    await db.album.addGenre(album, genre);
+    let genre = await db.genre.fetchByName('Indie Rock');
+    if (!genre) {
+      await db.genre.create('Indie Rock');
+      genre = await db.genre.fetchByName('Indie Rock');
+      console.log(`Genre:`, JSON.stringify(genre, null, 2));
+    }
+    
+    const exists = await db.album.hasGenre(album, genre.id);
+    if (!exists) {
+      await db.album.addGenre(album, genre.id);
+    }
     const genres = await db.album.fetchGenres(album);
     console.log(`Genres of ${album.title}:`, JSON.stringify(genres, null, 2));
   } catch(error) {
