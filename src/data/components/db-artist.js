@@ -19,7 +19,7 @@ class DbArtist {
       });
       console.log(artist.toJSON());
     } catch(error) {
-      console.error(error);
+      throw error;
     }
   }
 
@@ -56,6 +56,15 @@ class DbArtist {
       }
     });
     return artist;
+  }
+
+  /**
+   * Update an artist.
+   * 
+   * @param artist {Artist} The artist to update.
+   */
+  async update(artist) {
+    await artist.save();
   }
 
   /**

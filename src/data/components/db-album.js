@@ -19,7 +19,7 @@ class DbAlbum {
     try {
       const album = await Album.create({
         title: title,
-        release: realease,
+        release: release,
         url: url,
         artistId: artist.id
       });
