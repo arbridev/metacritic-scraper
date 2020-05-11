@@ -9,19 +9,19 @@ class DbAlbum {
   /**
    * Create an album.
    *
-   * @param artist {Artist} An Artist object, for which the album will be related
+   * @param artistId {String} The id of an Artist, for which the album will be related
    * @param title {String} A text, the title of the album
    * @param releale {Dateonly} The date of release
    * @param url {String} A text, the metacritic url of the album
    */
-  async create(artist, title, release, url) {
+  async create(artistId, title, release, url) {
     await this.sequelize.sync();
     try {
       const album = await Album.create({
         title: title,
         release: release,
         url: url,
-        artistId: artist.id
+        artistId: artistId
       });
       console.log(album.toJSON());
     } catch(error) {
@@ -68,18 +68,34 @@ class DbAlbum {
    * Update an album.
    *
    * @param album {Album} An album to be updated
-   * @param artist {Artist} An Artist object, for which the album will be related
+   */
+  async update(album) {
+    await this.sequelize.sync();
+    try {
+      await album.save();
+      console.log(album.toJSON());
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
+  /**
+   * Update an album.
+   *
+   * @param albumId {String} The id of the album to be updated
+   * @param artistId {String} The id of the Artist object, for which the album will be related
    * @param title {String} A text, the title of the album
    * @param release {Dateonly} The date of release
    * @param url {String} A text, the metacritic url of the album
    */
-  async update(album, artist, title, release, url) {
+  async update(albumId, artistId, title, release, url) {
     await this.sequelize.sync();
     try {
+      const album = await Album.findByPk(albumId);
       album.title = title;
       album.release = release;
       album.url = url;
-      album.artistId = artist.id;
+      album.artistId = artistId;
       await album.save();
       console.log(album.toJSON());
     } catch(error) {
@@ -108,6 +124,7 @@ class DbAlbum {
       return await album.hasGenre(genreId);
     } catch(error) {
       console.error(error);
+      throw error;
     }
   }
 
@@ -119,11 +136,24 @@ class DbAlbum {
       console.log(album.toJSON());
     } catch(error) {
       console.error(error);
+      throw error;
     }
   }
 
   async fetchGenres(album) {
     return await album.getGenres();
+  }
+
+  async removeGenre(album, genreId) {
+    await this.sequelize.sync();
+    try {
+      await album.removeGenre(genreId);
+      await album.save();
+      console.log(album.toJSON());
+    } catch(error) {
+      console.error(error);
+      throw error;
+    }
   }
 
 }

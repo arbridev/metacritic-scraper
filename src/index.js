@@ -22,6 +22,8 @@ app.use(bodyParser.json());
 
 const ArtistService = require('./app/artist-service');
 const artistService = new ArtistService(db);
+const AlbumService = require('./app/album-service');
+const albumService = new AlbumService(db);
 
 // Endpoints
 
@@ -33,6 +35,13 @@ app.get('/artist/:id', artistService.read.bind(artistService));
 app.get('/artist/name/:name', artistService.readByName.bind(artistService));
 app.post('/artist/update', artistService.update.bind(artistService));
 app.post('/artist/remove/:id', artistService.delete.bind(artistService));
+
+app.post('/album', albumService.create.bind(albumService));
+app.get('/albums', albumService.readAll.bind(albumService));
+app.get('/album/:id', albumService.read.bind(albumService));
+app.get('/album/title/:title', albumService.readByTitle.bind(albumService));
+app.post('/album/update', albumService.update.bind(albumService));
+app.post('/album/remove/:id', albumService.delete.bind(albumService));
 
 // Start server
 

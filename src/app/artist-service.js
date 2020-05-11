@@ -1,4 +1,4 @@
-var debug = require('debug')('m-s:a-s');
+var debug = require('debug')('m-s:artist-s');
 
 class ArtistService {
 
