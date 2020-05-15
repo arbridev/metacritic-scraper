@@ -1,4 +1,4 @@
-const debug = require('debug')('metacritic-scrapper:scrapper');
+const debug = require('debug')('m-s:scraper');
 const puppeteer = require('puppeteer');
 
 (async () => {
