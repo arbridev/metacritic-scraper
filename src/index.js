@@ -29,19 +29,14 @@ const albumService = new AlbumService(db);
 
 app.get('/', (req, res) => res.send('Server is running'));
 
-app.post('/artist', artistService.create.bind(artistService));
-app.get('/artists', artistService.readAll.bind(artistService));
-app.get('/artist/:id', artistService.read.bind(artistService));
-app.get('/artist/name/:name', artistService.readByName.bind(artistService));
-app.post('/artist/update', artistService.update.bind(artistService));
-app.post('/artist/remove/:id', artistService.delete.bind(artistService));
+app.get('/artists', artistService.endpointReadAll.bind(artistService));
+app.get('/artist/:id', artistService.endpointRead.bind(artistService));
+app.get('/artist', artistService.endpointReadByName.bind(artistService));
 
-app.post('/album', albumService.create.bind(albumService));
-app.get('/albums', albumService.readAll.bind(albumService));
-app.get('/album/:id', albumService.read.bind(albumService));
-app.get('/album/title/:title', albumService.readByTitle.bind(albumService));
-app.post('/album/update', albumService.update.bind(albumService));
-app.post('/album/remove/:id', albumService.delete.bind(albumService));
+app.post('/album', albumService.endpointCreate.bind(albumService));
+app.get('/albums', albumService.endpointReadAll.bind(albumService));
+app.get('/album/:id', albumService.endpointRead.bind(albumService));
+app.get('/album', albumService.endpointReadByTitle.bind(albumService));
 
 // Start server
 

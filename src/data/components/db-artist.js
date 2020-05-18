@@ -28,8 +28,15 @@ class DbArtist {
    * 
    * @return All artists.
    */
-  async fetchAll() {
-    return await Artist.findAll();
+  async fetchAll(offset, limit) {
+    if (offset !== undefined && limit !== undefined) {
+      return await Artist.findAll({
+        offset: offset,
+        limit: limit
+      });
+    } else {
+      return await Artist.findAll();
+    }
   }
 
   /**

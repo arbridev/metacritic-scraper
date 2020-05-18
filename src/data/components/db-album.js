@@ -34,8 +34,15 @@ class DbAlbum {
    * 
    * @return All albums.
    */
-  async fetchAll() {
-    return await Album.findAll();
+  async fetchAll(offset, limit) {
+    if (offset !== undefined && limit !== undefined) {
+      return await Album.findAll({
+        offset: offset,
+        limit: limit
+      });
+    } else {
+      return await Album.findAll();
+    }
   }
 
   /**
