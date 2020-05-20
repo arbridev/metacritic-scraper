@@ -69,8 +69,9 @@ class AlbumService {
       debug(result);
       res.json(result);
     } catch(error) {
-      debug(error);
-      res.status(500).send('Error reading album');
+      const endpointError = 'Error reading album';
+      debug(endpointError, error);
+      res.status(500).json({error: endpointError});
     }
   }
 
