@@ -25,6 +25,7 @@ export function fetchAlbumError(error) {
 export function fetchAlbum(albumId) {
   return dispatch => {
     dispatch(fetchAlbumPending());
+    let resOk = null;
     fetch(apiURL + '/album/' + albumId, {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -37,29 +38,30 @@ export function fetchAlbum(albumId) {
         referrerPolicy: 'no-referrer', // no-referrer, *client
     })
     .then(
-      response => response.text(),
-      // Do not use catch, because that will also catch
-      // any errors in the dispatch and resulting render,
-      // causing a loop of 'Unexpected batch number' errors.
-      // https://github.com/facebook/react/issues/6895
-      error => {
-        throw error;
+      response => {
+        resOk = response.ok;
+        return response.json()
       }
     )
-    .then(text => {
-      // Error responses are not catched by fetch API
-      try {
-        const json = JSON.parse(text);
-        if (json.error === undefined) { // only errors contains an 'error' property
-          dispatch(fetchAlbumSuccess(json));
-        } else {
-          dispatch(fetchAlbumError(json));
+    .then(
+      (result) => {
+        try {
+          if (!resOk) {
+            throw result;
+          }
+          dispatch(fetchAlbumSuccess(result));
+        } catch(error) {
+          throw error;
         }
-      } catch(textError) {
-        console.error(textError);
-        throw text;
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+        dispatch(fetchAlbumError({error: `Unknown error ${error}`}));
       }
-    })
-    .catch(error => dispatch(fetchAlbumError(error)));
+    ).catch(error => {
+      dispatch(fetchAlbumError(error))
+    });
   }
 }

@@ -9,7 +9,7 @@ import Album from './Album';
 
 function AlbumList(props) {
 
-    const [modelAlbum, setModelAlbum] = useState(null);
+    const [modelAlbum, setModelAlbum] = useState({});
 
     const albumState = useSelector(state => state.album);
     const { albumFetchPending, albumFetchSuccess, albumFetchError } = albumState;
@@ -31,11 +31,7 @@ function AlbumList(props) {
 
     // Success
     useEffect(() => {
-        if (albumFetchSuccess !== {}) {
-            setModelAlbum(albumFetchSuccess);
-        } else {
-            setModelAlbum(null);
-        }
+        setModelAlbum(albumFetchSuccess);
     }, [albumFetchSuccess]);
 
     // Error
@@ -48,21 +44,35 @@ function AlbumList(props) {
 
     let albums = [];
 
-    if (modelAlbum !== null) {
+    if (modelAlbum.title) {
         for (let i = 0; i < 10; i++) {
             albums.push(<li key={i}><Album album={modelAlbum}/></li>);
         }
-    } else {
-        albums = "No albums available";
     }
 
-    return (
-        <div>
-            <ul>
-                {albums}
-            </ul>
-        </div>
-    );
+    if (albumFetchPending) {
+        return (
+            <div>
+                <h3>Loading...</h3>
+            </div>
+        );
+    }
+
+    if (albums.length > 0) {
+        return (
+            <div>
+                <ul>
+                    {albums}
+                </ul>
+            </div>
+        );
+    } else {
+        return (
+            <div>
+                <h3>No albums available</h3>
+            </div>
+        );
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
