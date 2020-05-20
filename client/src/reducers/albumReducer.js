@@ -21,6 +21,7 @@ export const albumReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         ...state,
         albumFetchPending: true,
+        albumFetchSuccess: initialState.albumFetchSuccess,
         albumFetchError: initialState.albumFetchError
       })
     case actionTypes.ALBUM_FETCH_SUCCESS:
