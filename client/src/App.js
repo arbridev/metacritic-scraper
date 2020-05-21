@@ -2,9 +2,10 @@ import React from 'react';
 
 import store from './storage/store';
 import { Provider } from 'react-redux';
+import AlbumList from './components/AlbumList';
 
 import './App.css';
-import AlbumList from './components/AlbumList';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Globalized store
 

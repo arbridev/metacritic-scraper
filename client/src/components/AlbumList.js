@@ -6,6 +6,7 @@ import { connect, useSelector } from 'react-redux';
 import { fetchAlbums } from '../actions/albumsFetchActions';
 
 import Album from './Album';
+import GenresBar from './GenresBar';
 
 function AlbumList(props) {
 
@@ -61,6 +62,7 @@ function AlbumList(props) {
     if (albumsFetchError !== null) {
         return (
             <div>
+                <GenresBar/>
                 <h3>{albumsFetchError.error}</h3>
             </div>
         );
@@ -69,6 +71,7 @@ function AlbumList(props) {
     if (fetchedAlbums.length > 0) {
         return (
             <div>
+                <GenresBar/>
                 <ul>
                     {fetchedAlbums.map((album, index) => <li key={index}><Album album={album}/></li>)}
                 </ul>
@@ -77,6 +80,7 @@ function AlbumList(props) {
     } else {
         return (
             <div>
+                <GenresBar/>
                 <h3>No albums available</h3>
             </div>
         );
