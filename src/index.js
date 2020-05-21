@@ -24,6 +24,8 @@ const ArtistService = require('./app/artist-service');
 const artistService = new ArtistService(db);
 const AlbumService = require('./app/album-service');
 const albumService = new AlbumService(db);
+const GenreService = require('./app/genre-service');
+const genreService = new GenreService(db);
 
 // Endpoints
 
@@ -37,6 +39,8 @@ app.post('/album', albumService.endpointCreate.bind(albumService));
 app.get('/albums', albumService.endpointReadAll.bind(albumService));
 app.get('/album/:id', albumService.endpointRead.bind(albumService));
 app.get('/album', albumService.endpointReadByTitle.bind(albumService));
+
+app.get('/genres', genreService.endpointReadAll.bind(genreService));
 
 // Start server
 

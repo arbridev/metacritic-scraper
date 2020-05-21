@@ -24,6 +24,22 @@ class DbGenre {
   }
 
   /**
+   * Fetch all genres.
+   * 
+   * @return All genres.
+   */
+  async fetchAll(offset, limit) {
+    if (offset !== undefined && limit !== undefined) {
+      return await Genre.findAll({
+        offset: offset,
+        limit: limit
+      });
+    } else {
+      return await Genre.findAll();
+    }
+  }
+
+  /**
    * Fetch a single genre.
    * 
    * @param id {String} The id of the genre to fetch.
