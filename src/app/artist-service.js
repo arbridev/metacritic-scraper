@@ -40,8 +40,9 @@ class ArtistService {
       }
       res.json(result);
     } catch(error) {
-      debug(error);
-      res.status(500).send('Error reading artists');
+      const endpointError = 'Error reading artists';
+      debug(endpointError, error);
+      res.status(500).json({error: endpointError});
     }
   }
 
@@ -53,8 +54,9 @@ class ArtistService {
       const artist = await this.read(id);
       res.json(artist);
     } catch(error) {
-      debug(error);
-      res.status(500).send('Error reading artist');
+      const endpointError = 'Error reading artist';
+      debug(endpointError, error);
+      res.status(500).json({error: endpointError});
     }
   }
 
@@ -70,8 +72,9 @@ class ArtistService {
       const artist = await this.readByName(name);
       res.json(artist);
     } catch(error) {
-      debug(error);
-      res.status(500).send('Error reading artist');
+      const endpointError = 'Error reading artist';
+      debug(endpointError, error);
+      res.status(500).json({error: endpointError});
     }
   }
 

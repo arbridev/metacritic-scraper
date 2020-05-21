@@ -24,8 +24,9 @@ class AlbumService {
       await this.create(resArtist.id, title, release, url, genres);
       res.status(200).send('Album created');
     } catch(error) {
-      debug(error);
-      res.status(500).send('Error creating album');
+      const endpointError = 'Error creating album';
+      debug(endpointError, error);
+      res.status(500).json({error: endpointError});
     }
   }
 
@@ -54,8 +55,9 @@ class AlbumService {
       }
       res.json(result);
     } catch(error) {
-      debug(error);
-      res.status(500).send('Error reading albums');
+      const endpointError = 'Error reading albums';
+      debug(endpointError, error);
+      res.status(500).json({error: endpointError});
     }
   }
 
@@ -89,8 +91,9 @@ class AlbumService {
       debug(result);
       res.json(result);
     } catch(error) {
-      debug(error);
-      res.status(500).send('Error reading album');
+      const endpointError = 'Error reading album';
+      debug(endpointError, error);
+      res.status(500).json({error: endpointError});
     }
   }
 
@@ -125,6 +128,8 @@ class AlbumService {
   //     res.status(500).send('Error removing album');
   //   }
   // }
+
+  // Support methods
 
   async processGenres(genrenames, album) {
     let genrename;
