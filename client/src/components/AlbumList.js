@@ -3,54 +3,54 @@ import React, { useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect, useSelector } from 'react-redux';
 
-import { fetchAlbum } from '../actions/albumFetchActions';
+import { fetchAlbums } from '../actions/albumsFetchActions';
 
 import Album from './Album';
 
 function AlbumList(props) {
 
-    const [modelAlbum, setModelAlbum] = useState({});
+    const [fetchedAlbums, setFetchedAlbums] = useState([]);
 
     const albumState = useSelector(state => state.album);
-    const { albumFetchPending, albumFetchSuccess, albumFetchError } = albumState;
+    const { albumsFetchPending, albumsFetchSuccess, albumsFetchError } = albumState;
 
-    const { fetchAlbum } = props;
+    const { fetchAlbums } = props;
 
     useEffect(() => {
-        fetchAlbum('2');
-    }, [fetchAlbum]);
+        fetchAlbums();
+    }, [fetchAlbums]);
 
     // Pending
     useEffect(() => {
-        if (albumFetchPending) {
+        if (albumsFetchPending) {
             console.log("Pending");
         } else {
             console.log("Not pending");
         }
-    }, [albumFetchPending]);
+    }, [albumsFetchPending]);
 
     // Success
     useEffect(() => {
-        setModelAlbum(albumFetchSuccess);
-    }, [albumFetchSuccess]);
+        setFetchedAlbums(albumsFetchSuccess);
+    }, [albumsFetchSuccess]);
 
     // Error
     useEffect(() => {
-        if (albumFetchError) {
-            console.error(albumFetchError);
+        if (albumsFetchError) {
+            console.error(albumsFetchError);
         }
-    }, [albumFetchError]);
+    }, [albumsFetchError]);
 
 
     let albums = [];
 
-    if (modelAlbum.title) {
-        for (let i = 0; i < 10; i++) {
-            albums.push(<li key={i}><Album album={modelAlbum}/></li>);
+    if (fetchedAlbums.length > 0) {
+        for (let i = 0; i < fetchedAlbums.length; i++) {
+            albums.push(<li key={i}><Album album={fetchedAlbums[i]}/></li>);
         }
     }
 
-    if (albumFetchPending) {
+    if (albumsFetchPending) {
         return (
             <div>
                 <h3>Loading...</h3>
@@ -58,11 +58,19 @@ function AlbumList(props) {
         );
     }
 
-    if (albums.length > 0) {
+    if (albumsFetchError !== null) {
+        return (
+            <div>
+                <h3>{albumsFetchError.error}</h3>
+            </div>
+        );
+    }
+
+    if (fetchedAlbums.length > 0) {
         return (
             <div>
                 <ul>
-                    {albums}
+                    {fetchedAlbums.map((album, index) => <li key={index}><Album album={album}/></li>)}
                 </ul>
             </div>
         );
@@ -76,7 +84,7 @@ function AlbumList(props) {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchAlbum: fetchAlbum
+    fetchAlbums: fetchAlbums
 }, dispatch);
   
 export default connect(undefined, mapDispatchToProps)(AlbumList);
