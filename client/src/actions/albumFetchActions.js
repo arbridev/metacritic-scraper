@@ -58,7 +58,11 @@ export function fetchAlbum(albumId) {
       // instead of a catch() block so that we don't swallow
       // exceptions from actual bugs in components.
       (error) => {
-        dispatch(fetchAlbumError({error: `Unknown error ${error}`}));
+        if (/NetworkError/i.test(`${error}`)) {
+          dispatch(fetchAlbumError({error: 'Could not connect to server'}));
+        } else {
+          dispatch(fetchAlbumError({error: `${error}`}));
+        }
       }
     ).catch(error => {
       dispatch(fetchAlbumError(error))

@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import { albumReducer } from "./albumReducer";
+import { genreReducer } from "./genreReducer";
 
 const appReducer = combineReducers({
-    album: albumReducer
+    album: albumReducer,
+    genre: genreReducer
 });
 
 const rootReducer = (state, action) => {

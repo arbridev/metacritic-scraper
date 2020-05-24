@@ -4,14 +4,14 @@ import { bindActionCreators } from 'redux';
 import { connect, useSelector } from 'react-redux';
 
 import { fetchAlbums } from '../actions/albumsFetchActions';
+import { fetchGenres } from '../actions/genresFetchActions';
 
 import Album from './Album';
 import GenresBar from './GenresBar';
 
 function AlbumList(props) {
 
-  const selectValues = ['Select genre...', 'Rock', 'Alternative', 'Pop', 'Alternative Rock', 'Rap'];
-
+  const [fetchedGenres, setFetchedGenres] = useState([]);
   const [fetchedAlbums, setFetchedAlbums] = useState([]);
   const [values, setValues] = useState({
     genre1: null,
@@ -19,10 +19,12 @@ function AlbumList(props) {
     genre3: null
   });
 
+  const genreState = useSelector(state => state.genre);
   const albumState = useSelector(state => state.album);
+  const { genresFetchPending, genresFetchSuccess, genresFetchError } = genreState;
   const { albumsFetchPending, albumsFetchSuccess, albumsFetchError } = albumState;
 
-  const { fetchAlbums } = props;
+  const { fetchGenres, fetchAlbums } = props;
 
   const onGenreChange = function(event) {
     event.persist();
@@ -36,30 +38,63 @@ function AlbumList(props) {
   console.log('values', values);
 
   useEffect(() => {
-    fetchAlbums();
-  }, [fetchAlbums]);
+    fetchGenres();
+  }, [fetchGenres]);
 
-  // Pending
+  // Genres Pending
+  useEffect(() => {
+    if (genresFetchPending) {
+      console.log("Pending genres");
+    } else {
+      console.log("Not pending genres");
+    }
+  }, [genresFetchPending]);
+
+  // Genres Success
+  useEffect(() => {
+    setFetchedGenres(genresFetchSuccess);
+    if (genresFetchSuccess.length > 0) {
+      fetchAlbums();
+    }
+  }, [genresFetchSuccess, fetchAlbums]);
+
+  // Genres Error
+  useEffect(() => {
+    if (genresFetchError) {
+      console.error(genresFetchError);
+    }
+  }, [genresFetchError]);
+
+  // Albums Pending
   useEffect(() => {
     if (albumsFetchPending) {
-        console.log("Pending");
+      console.log("Pending albums");
     } else {
-        console.log("Not pending");
+      console.log("Not pending albums");
     }
   }, [albumsFetchPending]);
 
-  // Success
+  // Albums Success
   useEffect(() => {
     setFetchedAlbums(albumsFetchSuccess);
   }, [albumsFetchSuccess]);
 
-  // Error
+  // Albums Error
   useEffect(() => {
     if (albumsFetchError) {
-        console.error(albumsFetchError);
+      console.error(albumsFetchError);
     }
   }, [albumsFetchError]);
 
+
+  let selectValues = [];
+
+  if (fetchedGenres.length > 0) {
+    selectValues.push('Select genre...');
+    for (let i = 0; i < fetchedGenres.length; i++) {
+      selectValues.push(fetchedGenres[i].name);
+    }
+  }
 
   let albums = [];
 
@@ -69,10 +104,18 @@ function AlbumList(props) {
     }
   }
 
-  if (albumsFetchPending) {
+  if (genresFetchPending || albumsFetchPending) {
     return (
       <div>
-        <h3>Loading...</h3>
+        {genresFetchPending ? 
+        <h4>Loading available genres...</h4> : 
+        <GenresBar onSelectChange={onGenreChange} selectValues={selectValues}/>}
+        {albumsFetchPending ? 
+        <h3>Loading albums...</h3> : 
+        <ul>
+          {fetchedAlbums.map((album, index) => 
+          <li key={index}><Album album={album}/></li>)}
+        </ul>}
       </div>
     );
   }
@@ -106,7 +149,8 @@ function AlbumList(props) {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchAlbums: fetchAlbums
+    fetchAlbums: fetchAlbums,
+    fetchGenres: fetchGenres
 }, dispatch);
   
 export default connect(undefined, mapDispatchToProps)(AlbumList);
