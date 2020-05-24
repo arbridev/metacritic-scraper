@@ -120,7 +120,7 @@ function AlbumList(props) {
     );
   }
 
-  if (albumsFetchError !== null) {
+  if (albumsFetchError !== null || genresFetchError !== null) {
     return (
       <div>
         <GenresBar onSelectChange={onGenreChange} selectValues={selectValues}/>
