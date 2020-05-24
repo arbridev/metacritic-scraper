@@ -18,6 +18,7 @@ class DbGenre {
         name: name
       });
       console.log(genre.toJSON());
+      return genre;
     } catch(error) {
       console.error(error);
     }

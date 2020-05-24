@@ -18,6 +18,7 @@ class DbArtist {
         name: name
       });
       console.log(artist.toJSON());
+      return artist;
     } catch(error) {
       throw error;
     }

@@ -16,7 +16,7 @@ class AlbumService {
         throw 'Album already exists';
       }
       let resArtist = await this.db.artist.fetchByName(artist);
-      // create artist if does not exists
+      // create artist if it does not exists
       if (!resArtist) {
         resArtist = await this.db.artist.create(artist);
       }

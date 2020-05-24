@@ -24,6 +24,7 @@ class DbAlbum {
         artistId: artistId
       });
       console.log(album.toJSON());
+      return album;
     } catch(error) {
       console.error(error);
     }
