@@ -1,4 +1,5 @@
 const Album = require('../model/album');
+const { QueryTypes } = require('sequelize');
 
 class DbAlbum {
 
@@ -28,15 +29,50 @@ class DbAlbum {
     } catch(error) {
       console.error(error);
     }
-  }
+  } 
 
   /**
-   * Fetch all albums.
+   * Fetch all albums, filter by genre.
+   * 
+   * @param offset {Number} Offset to fetch at
+   * @param limit {Number} Limit of results
+   * @param genres {[String]} An array of the name of genres to filter on
    * 
    * @return All albums.
    */
-  async fetchAll(offset, limit) {
-    if (offset !== undefined && limit !== undefined) {
+  async fetchAll(offset, limit, genres) {
+    if (genres !== undefined) {
+      let genresArray = null;
+      if (!Array.isArray(genres)) {
+        genresArray = [genres];
+      } else {
+        genresArray = genres;
+      }
+      let queryStr = `select a.* from albums a left join album_genre j on a.id = j."albumId" left join genres g on j."genreId" = g.id`;
+      let replacements = {};
+      let genresQuery = '';
+      for (let i = 0; i < genresArray.length; i++) {
+        if (i === 0) {
+          genresQuery = genresQuery + ` where g.name = :genre${i}`
+        } else {
+          genresQuery = genresQuery + ` or g.name = :genre${i}`;
+        }
+        replacements[`genre${i}`] = genresArray[i];
+      }
+      queryStr = queryStr + genresQuery;
+      queryStr = queryStr + ' group by a.id';
+      if (offset !== undefined && limit !== undefined) {
+        queryStr = queryStr + ` limit ${limit} offset ${offset}`;
+      }
+      queryStr = queryStr + ';';
+      const albums = await this.sequelize.query(queryStr, {
+        model: Album,
+        mapToModel: true,
+        replacements: replacements,
+        type: QueryTypes.SELECT
+      });
+      return albums;
+    } else if (offset !== undefined && limit !== undefined) {
       return await Album.findAll({
         offset: offset,
         limit: limit

@@ -40,12 +40,12 @@ class AlbumService {
   async endpointReadAll(req, res) {
     debug('Request headers:', req.headers);
     debug('Request query:', req.query);
-    const { onlyids, offset, limit } = req.query;
+    const { onlyids, offset, limit, genres } = req.query;
     try {
       // parse query parameters
       const parsedOnlyIds = onlyids === 'true' ? true : false;
       
-      const albums = await this.db.album.fetchAll(offset, limit);
+      const albums = await this.db.album.fetchAll(offset, limit, genres);
       let result = null;
       if (parsedOnlyIds) {
         result = albums.map(album => album.id);
