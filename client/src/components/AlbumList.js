@@ -36,14 +36,9 @@ function AlbumList(props) {
   }
 
   const onSearchAlbums = function(event) {
-    console.log('search');
-    console.log('values', values);
     const valuesArray = Object.values(values).filter( value => value !== null);
-    console.log('valuesArray', valuesArray);
     fetchAlbums(undefined, undefined, valuesArray);
   }
-
-  console.log('values', values);
 
   useEffect(() => {
     fetchGenres();
@@ -62,7 +57,7 @@ function AlbumList(props) {
   useEffect(() => {
     setFetchedGenres(genresFetchSuccess);
     if (genresFetchSuccess.length > 0) {
-      fetchAlbums(undefined, undefined, undefined);
+      fetchAlbums(0, 10, undefined);
     }
   }, [genresFetchSuccess, fetchAlbums]);
 

@@ -28,9 +28,9 @@ export function fetchAlbums(offset, limit, genres) {
 
     let resOk = null;
     let url = apiURL + '/albums';
-    if (offset || limit || genres) {
+    if (limit || genres) {
       url = url + '?';
-      if (offset && limit) {
+      if (offset !== undefined && limit !== undefined) {
         url = url + `offset=${offset}&limit=${limit}`
       }
       if (genres) {
