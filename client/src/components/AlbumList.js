@@ -35,6 +35,14 @@ function AlbumList(props) {
     }));
   }
 
+  const onSearchAlbums = function(event) {
+    console.log('search');
+    console.log('values', values);
+    const valuesArray = Object.values(values).filter( value => value !== null);
+    console.log('valuesArray', valuesArray);
+    fetchAlbums(undefined, undefined, valuesArray);
+  }
+
   console.log('values', values);
 
   useEffect(() => {
@@ -54,7 +62,7 @@ function AlbumList(props) {
   useEffect(() => {
     setFetchedGenres(genresFetchSuccess);
     if (genresFetchSuccess.length > 0) {
-      fetchAlbums();
+      fetchAlbums(undefined, undefined, undefined);
     }
   }, [genresFetchSuccess, fetchAlbums]);
 
@@ -132,7 +140,7 @@ function AlbumList(props) {
   if (fetchedAlbums.length > 0) {
     return (
       <div>
-        <GenresBar onSelectChange={onGenreChange} selectValues={selectValues}/>
+        <GenresBar onSelectChange={onGenreChange} selectValues={selectValues} onSearch={onSearchAlbums}/>
         <ul>
           {fetchedAlbums.map((album, index) => <li key={index}><Album album={album}/></li>)}
         </ul>
@@ -141,7 +149,7 @@ function AlbumList(props) {
   } else {
     return (
       <div>
-        <GenresBar onSelectChange={onGenreChange} selectValues={selectValues}/>
+        <GenresBar onSelectChange={onGenreChange} selectValues={selectValues} onSearch={onSearchAlbums}/>
         <h3>No albums available</h3>
       </div>
     );

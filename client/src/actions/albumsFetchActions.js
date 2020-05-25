@@ -1,4 +1,4 @@
-import { apiURL } from "../constants"
+import { apiURL } from "../constants";
 
 export const actionTypes = { ALBUMS_FETCH_PENDING: 'ALBUMS_FETCH_PENDING', ALBUMS_FETCH_SUCCESS: 'ALBUMS_FETCH_SUCCESS', ALBUMS_FETCH_ERROR: 'ALBUMS_FETCH_ERROR' };
 
@@ -22,11 +22,28 @@ export function fetchAlbumsError(error) {
   }
 }
 
-export function fetchAlbums() {
+export function fetchAlbums(offset, limit, genres) {
   return dispatch => {
     dispatch(fetchAlbumsPending());
+
     let resOk = null;
-    fetch(apiURL + '/albums', {
+    let url = apiURL + '/albums';
+    if (offset || limit || genres) {
+      url = url + '?';
+      if (offset && limit) {
+        url = url + `offset=${offset}&limit=${limit}`
+      }
+      if (genres) {
+        for (let i = 0; i < genres.length; i++) {
+          url = url + `genres=${genres[i]}`;
+          if (i + 1 !== genres.length) {
+            url = url + '&';
+          }
+        }
+      }
+    }
+    
+    fetch(url, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
