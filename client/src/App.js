@@ -18,6 +18,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <h1>Metacritic's Music Albums</h1>
+          <h2>Filterer</h2>
         </header>
         <main>
           <AlbumList/>
