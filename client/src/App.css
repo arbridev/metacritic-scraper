@@ -1,9 +1,17 @@
-/* .App {
-  text-align: center;
-} */
+ol {
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+}
 
 .App-header {
-  background-color: #282c34;
+  background-color: #333333;
   min-height: 25vh;
   display: flex;
   flex-direction: column;

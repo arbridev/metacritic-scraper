@@ -18,11 +18,9 @@ function GenresBar(props) {
       <GenreSelect onChange={onSelectChange} values={selectValues} id='genre1'/>
       <GenreSelect onChange={onSelectChange} values={selectValues} id='genre2'/>
       <GenreSelect onChange={onSelectChange} values={selectValues} id='genre3'/>
-      <div className={styles.button}>
-        <Button variant="outline-secondary" onClick={onSearch}>
-          <Image src={searchIcon} fluid/>
-        </Button>
-      </div>
+      <Button className={styles.button} variant="outline-secondary" onClick={onSearch}>
+        <Image className={styles.icon} src={searchIcon} fluid/>
+      </Button>
     </div>
   );
 }

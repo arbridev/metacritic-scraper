@@ -9,6 +9,8 @@ import { fetchGenres } from '../actions/genresFetchActions';
 import Album from './Album';
 import GenresBar from './GenresBar';
 
+import styles from './AlbumList.module.css';
+
 function AlbumList(props) {
 
   const [fetchedGenres, setFetchedGenres] = useState([]);
@@ -115,7 +117,7 @@ function AlbumList(props) {
         <GenresBar onSelectChange={onGenreChange} selectValues={selectValues}/>}
         {albumsFetchPending ? 
         <h3>Loading albums...</h3> : 
-        <ul>
+        <ul className={styles.list}>
           {fetchedAlbums.map((album, index) => 
           <li key={index}><Album album={album}/></li>)}
         </ul>}
@@ -126,8 +128,8 @@ function AlbumList(props) {
   if (albumsFetchError !== null || genresFetchError !== null) {
     return (
       <div>
-        <GenresBar onSelectChange={onGenreChange} selectValues={selectValues}/>
-        <h3>{albumsFetchError.error}</h3>
+        <GenresBar selectValues={selectValues}/>
+        {albumsFetchError !== null ? <h3>{albumsFetchError.error}</h3> : <h3>{genresFetchError.error}</h3>}
       </div>
     );
   }
@@ -136,9 +138,9 @@ function AlbumList(props) {
     return (
       <div>
         <GenresBar onSelectChange={onGenreChange} selectValues={selectValues} onSearch={onSearchAlbums}/>
-        <ul>
+        <ol className={styles.list}>
           {fetchedAlbums.map((album, index) => <li key={index}><Album album={album}/></li>)}
-        </ul>
+        </ol>
       </div>
     );
   } else {
