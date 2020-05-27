@@ -6,19 +6,6 @@ class ArtistService {
       this.db = db;
   }
 
-  // async endpointCreate(req, res) {
-  //   debug('Request headers:', req.headers);
-  //   debug('Request body:', req.body);
-  //   const { name } = req.body;
-  //   try {
-  //     await this.create(name);
-  //     res.status(200).send('Artist created');
-  //   } catch(error) {
-  //     debug(error);
-  //     res.status(500).send('Error creating artist');
-  //   }
-  // }
-
   async create(name) {
     return await this.db.artist.create(name);
   }
@@ -81,37 +68,6 @@ class ArtistService {
   async readByName(name) {
     return await this.db.artist.fetchByName(name);
   }
-
-  // async update(req, res) {
-  //   debug('Request headers:', req.headers);
-  //   debug('Request body:', req.body);
-  //   const { id, name } = req.body;
-  //   try {
-  //     const artist = await this.db.artist.fetch(id);
-  //     if (!artist) {
-  //       throw 'Artist not found';
-  //     }
-  //     artist.name = name;
-  //     await this.db.artist.update(artist);
-  //     res.status(200).send('Artist updated');
-  //   } catch(error) {
-  //     debug(error);
-  //     res.status(500).send('Error updating artist');
-  //   }
-  // }
-
-  // async delete(req, res) {
-  //   debug('Request headers:', req.headers);
-  //   debug('Request params:', req.params);
-  //   const { id } = req.params;
-  //   try {
-  //     await this.db.artist.remove(id);
-  //     res.status(200).send('Artist removed');
-  //   } catch(error) {
-  //     debug(error);
-  //     res.status(500).send('Error removing artist');
-  //   }
-  // }
 
 }
 

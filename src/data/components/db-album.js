@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Album = require('../model/album');
 const { QueryTypes } = require('sequelize');
 
@@ -20,14 +21,13 @@ class DbAlbum {
     try {
       const album = await Album.create({
         title: title,
-        release: release,
+        release: moment(release).format('LL'),
         url: url,
         artistId: artistId
       });
-      console.log(album.toJSON());
       return album;
     } catch(error) {
-      console.error(error);
+      throw error;
     }
   } 
 
@@ -117,9 +117,8 @@ class DbAlbum {
     await this.sequelize.sync();
     try {
       await album.save();
-      console.log(album.toJSON());
     } catch(error) {
-      console.error(error);
+      throw error;
     }
   }
 
@@ -141,9 +140,8 @@ class DbAlbum {
       album.url = url;
       album.artistId = artistId;
       await album.save();
-      console.log(album.toJSON());
     } catch(error) {
-      console.error(error);
+      throw error;
     }
   }
 
@@ -167,7 +165,6 @@ class DbAlbum {
     try {
       return await album.hasGenre(genreId);
     } catch(error) {
-      console.error(error);
       throw error;
     }
   }
@@ -177,9 +174,7 @@ class DbAlbum {
     try {
       await album.addGenre(genreId);
       await album.save();
-      console.log(album.toJSON());
     } catch(error) {
-      console.error(error);
       throw error;
     }
   }
@@ -193,9 +188,7 @@ class DbAlbum {
     try {
       await album.removeGenre(genreId);
       await album.save();
-      console.log(album.toJSON());
     } catch(error) {
-      console.error(error);
       throw error;
     }
   }

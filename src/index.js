@@ -35,7 +35,7 @@ app.get('/artists', artistService.endpointReadAll.bind(artistService));
 app.get('/artist/:id', artistService.endpointRead.bind(artistService));
 app.get('/artist', artistService.endpointReadByName.bind(artistService));
 
-app.post('/album', albumService.endpointCreate.bind(albumService));
+// app.post('/album', albumService.endpointCreate.bind(albumService));
 app.get('/albums', albumService.endpointReadAll.bind(albumService));
 app.get('/album/:id', albumService.endpointRead.bind(albumService));
 app.get('/album', albumService.endpointReadByTitle.bind(albumService));

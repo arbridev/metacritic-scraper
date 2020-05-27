@@ -37,6 +37,22 @@ class AlbumService {
     return album;
   }
 
+  async createWithArtist(artist, title, release, url, genres) {
+    let resAlbum = await this.readByTitle(title);
+    if (resAlbum) {
+      throw 'Album already exists';
+    }
+    let resArtist = await this.db.artist.fetchByName(artist);
+    // create artist if it does not exists
+    if (!resArtist) {
+      resArtist = await this.db.artist.create(artist);
+    }
+
+    const album = await this.create(resArtist.id, title, release, url, genres);
+    await this.processGenres(genres, album);
+    return album;
+  }
+
   async endpointReadAll(req, res) {
     debug('Request headers:', req.headers);
     debug('Request query:', req.query);
@@ -100,34 +116,6 @@ class AlbumService {
   async readByTitle(title) {
     return await this.db.album.fetchByTitle(title);
   }
-
-  // async update(req, res) {
-  //   debug('Request headers:', req.headers);
-  //   debug('Request body:', req.body);
-  //   const { albumId, artistId, title, release, url, genres } = req.body;
-  //   try {
-  //     await this.db.album.update(albumId, artistId, title, release, url);
-  //     const album = await this.db.album.fetch(albumId);
-  //     await this.processGenres(genres, album);
-  //     res.status(200).send('Album updated');
-  //   } catch(error) {
-  //     debug(error);
-  //     res.status(500).send('Error updating album');
-  //   }
-  // }
-
-  // async delete(req, res) {
-  //   debug('Request headers:', req.headers);
-  //   debug('Request params:', req.params);
-  //   const { id } = req.params;
-  //   try {
-  //     await this.db.album.remove(id);
-  //     res.status(200).send('Album removed');
-  //   } catch(error) {
-  //     debug(error);
-  //     res.status(500).send('Error removing album');
-  //   }
-  // }
 
   // Support methods
 

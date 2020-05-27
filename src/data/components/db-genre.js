@@ -17,10 +17,9 @@ class DbGenre {
       const genre = await Genre.create({
         name: name
       });
-      console.log(genre.toJSON());
       return genre;
     } catch(error) {
-      console.error(error);
+      throw error;
     }
   }
 

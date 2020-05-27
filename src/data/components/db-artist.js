@@ -17,7 +17,6 @@ class DbArtist {
       const artist = await Artist.create({
         name: name
       });
-      console.log(artist.toJSON());
       return artist;
     } catch(error) {
       throw error;
