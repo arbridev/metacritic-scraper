@@ -39,7 +39,7 @@ function AlbumList(props) {
 
   const onSearchAlbums = function(event) {
     const valuesArray = Object.values(values).filter( value => value !== null);
-    fetchAlbums(undefined, undefined, valuesArray);
+    fetchAlbums(0, 20, valuesArray);
   }
 
   useEffect(() => {
