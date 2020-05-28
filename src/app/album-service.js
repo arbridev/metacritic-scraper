@@ -38,19 +38,23 @@ class AlbumService {
   }
 
   async createWithArtist(artist, title, release, url, genres) {
-    let resAlbum = await this.readByTitle(title);
-    if (resAlbum) {
-      throw 'Album already exists';
-    }
-    let resArtist = await this.db.artist.fetchByName(artist);
-    // create artist if it does not exists
-    if (!resArtist) {
-      resArtist = await this.db.artist.create(artist);
-    }
+    try {
+      let resAlbum = await this.readByTitle(title);
+      if (resAlbum) {
+        throw 'Album already exists';
+      }
+      let resArtist = await this.db.artist.fetchByName(artist);
+      // create artist if it does not exists
+      if (!resArtist) {
+        resArtist = await this.db.artist.create(artist);
+      }
 
-    const album = await this.create(resArtist.id, title, release, url, genres);
-    await this.processGenres(genres, album);
-    return album;
+      const album = await this.create(resArtist.id, title, release, url, genres);
+      await this.processGenres(genres, album);
+      return album;
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   async endpointReadAll(req, res) {

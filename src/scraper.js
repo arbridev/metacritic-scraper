@@ -18,8 +18,15 @@ exports.scrapeLastReleases = async function () {
 
   const deepness = 10;
 
-  const browser = await puppeteer.launch();
-  // const browser = await puppeteer.launch({headless: false}); // default is true
+  let browser = null;
+  try {
+    browser = await puppeteer.launch();
+    // browser = await puppeteer.launch({headless: false}); // default is true
+  } catch(error) {
+    console.error(error);
+  }
+
+  console.log('Scraping last releases');
   const page = await browser.newPage();
   try {
     // Main music page
@@ -63,12 +70,14 @@ exports.scrapeLastReleases = async function () {
       const readAlbum = await albumService.readByTitle(album.title);
       if (!readAlbum) {
         await albumService.createWithArtist(album.artist, album.title, album.release, album.url, album.genres);
-        debug('Created scraped album');
+        console.log('Created scraped album:', album.title);
       }
     }
   } catch(error) {
-    debug(error);
+    console.error(error);
+  } finally {
+    await browser.close();
   }
-
-  await browser.close();
+  
+  console.log('Ended scraping last releases');
 };

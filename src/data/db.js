@@ -1,10 +1,10 @@
-// process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // error: self signed certificate
 
 const pg = require('pg');
-// pg.defaults.ssl = process.env.DATABASE_URL ? true : false;
+pg.defaults.ssl = process.env.DATABASE_URL ? true : false;
 
 const { Sequelize } = require('sequelize');
-const dburl = require('./dburl');
+const dburl = process.env.DATABASE_URL ? process.env.DATABASE_URL : require('./dburl');
 const sequelize = new Sequelize(dburl, { logging: false });
 
 module.exports.sequelize = sequelize;

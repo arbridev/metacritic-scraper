@@ -26,6 +26,7 @@ export function fetchGenres() {
   return dispatch => {
     dispatch(fetchGenresPending());
     let resOk = null;
+    console.log('Url:', apiURL + '/genres');
     fetch(apiURL + '/genres', {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin

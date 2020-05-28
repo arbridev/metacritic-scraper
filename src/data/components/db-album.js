@@ -1,4 +1,5 @@
 const moment = require('moment');
+moment.locale('en');
 const Album = require('../model/album');
 const { QueryTypes } = require('sequelize');
 
@@ -21,7 +22,7 @@ class DbAlbum {
     try {
       const album = await Album.create({
         title: title,
-        release: moment(release).format('LL'),
+        release: moment(release, 'MMM DD, YYYY'),
         url: url,
         artistId: artistId
       });
