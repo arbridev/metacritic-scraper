@@ -49,23 +49,23 @@ class DbAlbum {
       } else {
         genresArray = genres;
       }
-      let queryStr = `select a.* from albums a left join album_genre j on a.id = j."albumId" left join genres g on j."genreId" = g.id`;
+      let queryStr = '';
       let replacements = {};
-      let genresQuery = '';
-      for (let i = 0; i < genresArray.length; i++) {
-        if (i === 0) {
-          genresQuery = genresQuery + ` where g.name = :genre${i}`
-        } else {
-          genresQuery = genresQuery + ` or g.name = :genre${i}`;
+      if (genresArray.length > 0) {
+        for (let i = 0; i < genresArray.length; i++) {
+          if (i !== 0) {
+            queryStr += ' intersect ';
+          }
+          queryStr += `select a.* from albums a left join album_genre j on a.id = j."albumId" left join genres g on j."genreId" = g.id where g.name = :genre${i} group by a.id, g.id`;
+          replacements[`genre${i}`] = genresArray[i];
         }
-        replacements[`genre${i}`] = genresArray[i];
+      } else {
+        queryStr += `select a.* from albums a left join album_genre j on a.id = j."albumId" left join genres g on j."genreId" = g.id`;
       }
-      queryStr = queryStr + genresQuery;
-      queryStr = queryStr + ' group by a.id';
       if (offset !== undefined && limit !== undefined) {
-        queryStr = queryStr + ` limit ${limit} offset ${offset}`;
+        queryStr += ` limit ${limit} offset ${offset}`;
       }
-      queryStr = queryStr + ';';
+      queryStr += ';';
       const albums = await this.sequelize.query(queryStr, {
         model: Album,
         mapToModel: true,
