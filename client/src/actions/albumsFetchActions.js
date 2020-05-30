@@ -25,13 +25,16 @@ export function fetchAlbumsError(error) {
 export function fetchAlbums(offset, limit, genres) {
   return dispatch => {
     dispatch(fetchAlbumsPending());
-
+    
     let resOk = null;
     let url = apiURL + '/albums';
     if (limit || genres) {
       url = url + '?';
       if (offset !== undefined && limit !== undefined) {
-        url = url + `offset=${offset}&limit=${limit}`
+        url = url + `offset=${offset}&limit=${limit}`;
+        if (genres) {
+          url = url + '&';
+        }
       }
       if (genres) {
         for (let i = 0; i < genres.length; i++) {
@@ -42,7 +45,7 @@ export function fetchAlbums(offset, limit, genres) {
         }
       }
     }
-    
+    console.log('url', url);
     fetch(url, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
