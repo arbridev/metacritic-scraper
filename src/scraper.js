@@ -32,14 +32,14 @@ exports.scrapeLastReleases = async function () {
     // Main music page
     await page.goto('https://www.metacritic.com/browse/albums/release-date/available/date', {waitUntil: 'domcontentloaded'});
     // Iterate through albums list
-    for (let i = 1; i <= deepness; i++) {
+    for (let i = 1; i <= deepness; i = i + 2) {
       // Open album page in a new tab
-      const link = await page.$(`li.product:nth-child(${i}) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1)`);
+      const link = await page.$(`div.browse_list_wrapper:nth-child(3) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(${i}) > td:nth-child(2) > a:nth-child(3)`);
       const newPagePromise = new Promise(x => browser.once('targetcreated', target => x(target.page())));
       await link.click({button: 'middle'});
       const albumPage = await newPagePromise;
       await albumPage.bringToFront();
-      await albumPage.waitForSelector('.product_genre > span:nth-child(2)', {
+      await albumPage.waitForSelector('.metascore_wrap > div:nth-child(1)', {
         visible: true,
       });
       // Extract album data
@@ -48,7 +48,12 @@ exports.scrapeLastReleases = async function () {
         const artist = document.querySelector('.band_name').innerText;
         const release = document.querySelector('li.release > span:nth-child(2)').innerText;
         const url = window.location.href;
-        const textGenres = document.querySelector('.product_genre').innerText;
+        let textGenres = document.querySelector('.product_genre');
+        if (textGenres) {
+          textGenres = textGenres.innerText;
+        } else {
+          textGenres = "";
+        }
         return {
           title: title,
           artist: artist,

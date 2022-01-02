@@ -13,9 +13,9 @@ This project is composed by a backend and a frontend, in order to run the entire
 ### Prerequisites
 
 ```
-node 12.16.3
-npm 6.10.2
-PostgreSQL 12.2
+node ^16.13.1
+npm ^8.3.0
+PostgreSQL ^12.2
 ```
 
 ### Installing
@@ -49,7 +49,7 @@ npm run dev
 
 Scrape data from metacritic
 ```
-node scrapetask.js
+node src/scrapetask.js
 ```
 
 Run the frontend client for development (located in the _client_ directory)
