@@ -59,6 +59,11 @@ npm install
 npm run dev
 ```
 
+For frontend client deployment use 'git subtree':
+```
+git subtree push --prefix client/ <remote> main
+```
+
 If everything runs smoothly you should see the client pop in your browser, you can play with it selecting genres and hitting the _search_ button.
 
 ## Deployment
